@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { margin: 5px; padding: 5px; }
+        button { margin: 5px; padding: 5px 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Users Management</h1>
+
+    <h2>Add User</h2>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="email" id="email" placeholder="Email" />
+    <button onclick="addUser()">Add User</button>
+
+    <h2>Users List</h2>
+    <ul id="usersList"></ul>
+
+    <script>
+        const apiUrl = '/users';
+
+        async function fetchUsers() {
+            const res = await fetch(apiUrl);
+            const users = await res.json();
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = `${user.name} — ${user.email}`;
+                usersList.appendChild(li);
+            });
+        }
+
+        async function addUser() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            if (!name || !email) {
+                alert('Name and Email are required');
+                return;
+            }
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+            if (res.ok) {
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                fetchUsers();
+            } else {
+                alert('Failed to add user');
+            }
+        }
+
+        fetchUsers();
+    </script>
+</body>
+</html>

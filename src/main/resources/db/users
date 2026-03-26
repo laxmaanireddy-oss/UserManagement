@@ -1,0 +1,13 @@
+CREATE DATABASE users_db;
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name, email, created_at)
+VALUES 
+('John Doe', 'john@email.com', '2026-03-26 10:00:00'),
+('Sara Ahmed', 'sara@email.com', '2026-03-26 11:00:00');
